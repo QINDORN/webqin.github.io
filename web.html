@@ -1,0 +1,211 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>
+长沙生活服务点
+    </title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+        #header {
+        height: 50px;
+        background-color: #3C698B;
+        color: white;
+        text-align: center;
+        line-height: 50px;
+        font-size: 24px;
+      
+        
+    }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.26/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.26/"></script>
+
+    <script>
+    require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/FeatureLayer",
+        "esri/widgets/Legend",
+        "esri/widgets/ScaleBar",
+        "esri/widgets/BasemapGallery",
+        "esri/widgets/LayerList",
+        "esri/widgets/Search",
+        "esri/widgets/Expand",
+        "esri/widgets/Compass",
+        "esri/widgets/Home",
+        "esri/widgets/DistanceMeasurement2D",
+        "esri/widgets/Print",
+        "esri/widgets/CoordinateConversion",
+        "esri/widgets/Editor",
+
+      ], (
+        Map,
+        MapView,
+        FeatureLayer,
+        Legend,
+        ScaleBar,
+        BasemapGallery,
+        LayerList,
+        Search,
+        Expand,
+        Compass,
+        Home,
+        DistanceMeasurement2D,
+        Print,
+        CoordinateConversion,
+        Editor
+      ) => {
+        const flayer1 = new FeatureLayer({
+          url: "https://www.geosceneonline.cn/server/rest/services/Hosted/POI数据/FeatureServer"
+        });
+
+        const flayer2 = new FeatureLayer({
+          url: "https://www.geosceneonline.cn/server/rest/services/Hosted/长沙生活服务点/FeatureServer/2"
+        });
+
+        const flayer3 = new FeatureLayer({
+          url: "https://www.geosceneonline.cn/server/rest/services/Hosted/长沙生活服务点/FeatureServer/3"
+        });
+
+        const flayer4 = new FeatureLayer({
+          url: "https://www.geosceneonline.cn/server/rest/services/Hosted/长沙生活服务点/FeatureServer/4"
+        });
+        
+       
+        const map1 = new Map({
+          basemap: "topo",
+          layers: [flayer1, flayer2, flayer3, flayer4]
+        });
+
+        const view1 = new MapView({
+          container: "viewDiv",
+          map: map1,
+          zoom: 12.99,
+          center: [113, 28.19] // longitude, latitude
+        });
+
+        let legend1 = new Legend({
+          view: view1,
+          layerInfos: [
+            {
+              layer: flayer1, flayer2, flayer3, flayer4,
+              title: "服务点类型"
+            }
+          ]
+        });
+        view1.ui.add(legend1, "bottom-right");
+        
+
+        let scaleBar = new ScaleBar({
+          view: view1,
+          style: "ruler",
+          unit: "metric"
+        });
+        // Add widget to the bottom left corner of the view
+        view1.ui.add(scaleBar, {
+          position: "bottom-left"
+        });
+
+        const searchWidget = new Search({
+         view: view1
+         });
+         // Adds the search widget below other elements in
+                  // the top left corner of the view
+         view1.ui.add(searchWidget, {
+         position: "top-right",
+         index: 2
+         });
+        
+        
+        let basemapGallery = new BasemapGallery({
+          view: view1
+        });
+        // Add widget to the top right corner of the view
+        view1.ui.add(
+          new Expand({ content: basemapGallery, expanded: false }),
+          "top-right"
+         );
+
+               
+        let homeWidget = new Home({
+         view: view1
+        });
+      // adds the home widget to the top left corner of the MapView
+       view1.ui.add(homeWidget, "top-left");
+        
+       
+        let layerList = new LayerList({
+          view: view1
+        });
+        // Adds widget below other elements in the top left corner of the view
+        view1.ui.add(
+          new Expand({ content: layerList, expanded: false }),
+          "top-left"
+         );
+
+        let compass = new Compass({
+         view: view1
+        });
+      // adds the compass to the top left corner of the MapView
+         view1.ui.add(compass, "top-left");
+       
+       
+        let measurementWidget = new DistanceMeasurement2D({
+        view: view1
+        });
+       view1.ui.add(new Expand({ content: measurementWidget, expanded: false }),
+          "top-right");
+          
+        const print = new Print({
+         view: view1,
+       // specify your own print service
+        printServiceUrl:
+     "https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
+        });
+        // Adds widget below other elements in the top left corner of the view
+      view1.ui.add(
+          new Expand({ content: print, expanded: false }),
+          "top-right"
+         );
+         
+        let ccWidget = new CoordinateConversion({
+         view: view1
+         });
+
+         // Adds widget in the bottom left corner of the view
+         view1.ui.add(ccWidget, "bottom-right");
+         
+       const editor = new Editor({
+        view: view1
+        });
+         view1.ui.add(new Expand({ content:editor, expanded: false }),
+          "top-right");
+          
+         
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="header">长沙生活服务点</div>
+    <div id="viewDiv"></div>
+  
+     
+     
+  </body>
+</html>
